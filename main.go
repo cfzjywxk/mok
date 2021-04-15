@@ -54,8 +54,13 @@ func main() {
 			}
 		}
 
-		key = codec.EncodeBytes([]byte{}, key)
-		fmt.Printf("built key: %s\n", strings.ToUpper(hex.EncodeToString(key)))
+		comparableKey := codec.EncodeBytes([]byte{}, key)
+		rocksdbKey := make([]byte, 0, len(comparableKey)+1)
+		rocksdbKey = append(rocksdbKey, 'z')
+		rocksdbKey = append(rocksdbKey, comparableKey...)
+		fmt.Printf("built            key: %s\n", strings.ToUpper(hex.EncodeToString(key)))
+		fmt.Printf("built comparable key: %s\n", strings.ToUpper(hex.EncodeToString(comparableKey)))
+		fmt.Printf("built    rocksdb key: %s\n", strings.ToUpper(hex.EncodeToString(rocksdbKey)))
 	} else {
 		fmt.Println("usage:\nmok {flags} [key]")
 		flag.PrintDefaults()
